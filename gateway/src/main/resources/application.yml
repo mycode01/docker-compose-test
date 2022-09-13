@@ -1,0 +1,62 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: gateway
+  #  profiles:
+  #    include: common
+  cloud:
+    #    config:
+    #      uri: ${config_servers:http://localhost:9001}
+    #      searchPaths: ${spring.application.name}
+    #      default-label: main
+    gateway:
+      routes:
+#        - id: test-application
+#          #          uri: http://localhost:8081 # k8s 서비스 이름으로 대체가능
+#          uri: lb://test-application # eureka 사용시 spring.application.name 으로
+#          predicates:
+#            - Path=/prefix/**
+#          filters:
+#            - name: RewritePath
+#              args:
+#                regexp: /prefix/(?<uri>.*)
+#                replacement: /${uri}
+#                  #            - name: Retry
+#                  #              args:
+#                  #                retries: 5              # 재시도 횟수
+#                  #                statuses: BAD_GATEWAY, INTERNAL_SERVER_ERROR, SERVICE_UNAVAILABLE
+#                  #                methods: GET, POST, PUT, DELETE # GET 을 제외한 작업에서 중복 작업에 대한 처리를 철저하게 할것
+#                  #                backoff:
+#                  #                  firstBackoff: 500ms   #첫번째 재시도는 실패 후 0.5초 후 수행
+#                  #                  maxBackoff: 2000ms    #재시도 간격
+#                  #                  factor: 10            #firstBackoff * (factor^retries)가 재시도 간격임. maxBackoff보다 클 수는 없음.
+#                #exceptions:
+#                #- java.net.ConnectException # Connect가 안되는 경우에만 retry
+        - id: account
+          uri: lb://account/
+          predicates:
+            - Path=/account/**
+          filters :
+            - name: RewritePath
+              args:
+                regexp: /account/(?<uri>.*)
+                replacement: /${uri}
+        - id: contents
+          uri: lb://contents/
+          predicates:
+            - Path=/contents/**
+          filters:
+            - name: RewritePath
+              args:
+                regexp: /contents/(?<uri>.*)
+                replacement: /${uri}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true

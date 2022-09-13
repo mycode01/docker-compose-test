@@ -1,0 +1,45 @@
+version: "3.0"
+services:
+  contents:
+    build: ./contents
+    ports: 
+      - 8082:8082
+    restart: on-failure
+    depends_on: 
+      - discovery
+
+  # member-db:
+  #   image: mysql:8
+  #   ports: 
+  #     - 3307:3306
+  #   environment: 
+  #     MYSQL_ROOT_PASSWORD: root_password
+  #     MYSQL_USER: sa
+  #     MYSQL_PASSWORD: sa
+  #     MYSQL_DATABASE: member_database
+    
+  account:
+    build: ./account
+    ports:
+      - 8081:8081
+    restart: on-failure
+    depends_on: 
+      - discovery
+
+  gateway:
+    build: ./gateway
+    ports:
+      - 8080:8080
+    restart: on-failure
+    depends_on: 
+      - discovery
+      - account
+      - contents
+  
+  
+  discovery:
+    build: ./discovery
+    restart: on-failure
+    ports: 
+      - 8761:8761
+  

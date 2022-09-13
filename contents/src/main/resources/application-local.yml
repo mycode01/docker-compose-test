@@ -1,0 +1,22 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: contents
+eureka:
+  client:
+    service-url:
+      defaultZone: http://peer1.127.0.0.1.nip.io:8761/eureka/
+    fetch-registry: false
+    register-with-eureka: false
+  instance:
+    prefer-ip-address: false
+
+application:
+  jwt:
+    secret: AKUa5KN677GGWA3d2IZVrpNoAJLFdrvbkZ9+dgsGH98=
+    expiryMills: 3600000
+  auth:
+    header:
+      scheme: X-ACCOUNT-AUTH-TOKEN

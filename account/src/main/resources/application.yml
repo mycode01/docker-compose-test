@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+
+spring:
+  application:
+    name: account
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+
+application:
+  jwt:
+    secret: AKUa5KN677GGWA3d2IZVrpNoAJLFdrvbkZ9+dgsGH98=
+    expiryMills: 3600000
+  auth:
+    header:
+      scheme: X-ACCOUNT-AUTH-TOKEN

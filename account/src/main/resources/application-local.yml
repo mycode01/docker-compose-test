@@ -1,0 +1,45 @@
+server:
+  port: 8081
+
+
+spring:
+  application:
+    name: account
+  datasource:
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://peer1.127.0.0.1.nip.io:8761/eureka/
+    fetch-registry: false
+    register-with-eureka: false
+  instance:
+    prefer-ip-address: false
+
+
+application:
+  jwt:
+    secret: AKUa5KN677GGWA3d2IZVrpNoAJLFdrvbkZ9+dgsGH98=
+    expiryMills: 3600000
+  auth:
+    header:
+      scheme: X-ACCOUNT-AUTH-TOKEN
+
+springdoc:
+  default-consumes-media-type: text/yaml
+  swagger-ui:
+    path: animal.html
+  version: v1
+  paths-to-match:
+    - /bear/**
+    - /auth/**
